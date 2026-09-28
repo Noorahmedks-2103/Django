@@ -1,0 +1,18 @@
+from rest_framework import serializers
+from .models import Product
+
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=Product
+        fields=['id','name','price','quantity','brand']
+        read_only_fields=['id']
+   
+
+    def validate_price(self,price):
+        if price < 0:
+            raise serializers.ValidationError("Price always be a non-negative number")
+        return price
+    def validate_quantity(self,quantity):
+        if quantity<0:
+            raise serializers.ValidationError('Quantity must be a non-negative number')
+        return quantity
